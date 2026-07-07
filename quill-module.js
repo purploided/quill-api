@@ -367,20 +367,20 @@ const Quill = (() => { // unga bunga quill module
     
     function leaderstats() {
         let currentWpm = getWPM();
-        let currentAcc = accuracy();
+        let acc = accuracy();
+        let currentAcc = acc.replace("%", "");
 
         let leaderstatsLocalStorage = localStorage.getItem("leaderstats");
         let leaderstatsParsed = leaderstatsLocalStorage ? JSON.parse(leaderstatsLocalStorage) : { wpm: 0, acc: 0 };
-
-        if (currentWpm > leaderstatsParsed.wpm || currentAcc > leaderstatsParsed.acc) {
+                
+        if (currentWpm > leaderstatsParsed.wpm) {
             leaderstatsParsed.wpm = currentWpm;
+        }
+        if (currentAcc > leaderstatsParsed.acc) {
             leaderstatsParsed.acc = currentAcc;
         }
-        else if (currentAcc > leaderstatsParsed.acc) {
-            leaderstatsParsed.acc = currentAcc;
-        }
-        else if (currentWpm > leaderstatsParsed.wpm) {
-            leaderstatsParsed.wpm = currentWpm;
+        else if (currentAcc == 100) { // the only fix that i can currently think of | 07/07/2026
+            leaderstatsParsed.acc = 100;
         }
 
         localStorage.setItem("leaderstats", JSON.stringify(leaderstatsParsed));
@@ -398,7 +398,7 @@ const Quill = (() => { // unga bunga quill module
                 "font-family: Comic Sans MS;",
                 "color: #fff; background: #222; font-family: Comic Sans MS; padding: 2px 6px; border-radius: 4px;"
             );
-    }
+        }
 
         return leaderstatsParsed;
     }
